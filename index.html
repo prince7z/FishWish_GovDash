@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fisheries Monitoring Dashboard - Government of India</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <i class="fas fa-fish"></i>
+                <h1>Fisheries Monitoring System</h1>
+                <p>Government of India - Department of Fisheries</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn--primary btn--full-width">Login</button>
+                <div class="login-help">
+                    <small>Demo credentials: admin/admin123, officer1/officer123, analyst1/analyst123</small>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="main-app hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <button id="sidebarToggle" class="btn btn--outline btn--sm">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="app-title">Fisheries Monitoring Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <div class="emergency-alerts">
+                    <button id="sosAlertsBtn" class="btn btn--outline btn--sm emergency-btn">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        SOS: <span id="sosCount">2</span>
+                    </button>
+                </div>
+                <span id="currentUser" class="user-info"></span>
+                <button id="logoutBtn" class="btn btn--outline btn--sm">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <nav id="sidebar" class="sidebar">
+            <ul class="nav-menu">
+                <li><a href="#" data-section="dashboard" class="nav-link active">
+                    <i class="fas fa-tachometer-alt"></i>Dashboard
+                </a></li>
+                <li><a href="#" data-section="sos" class="nav-link">
+                    <i class="fas fa-exclamation-circle"></i>SOS Emergency
+                </a></li>
+                <li><a href="#" data-section="conservation" class="nav-link">
+                    <i class="fas fa-leaf"></i>Conservation
+                </a></li>
+                <li><a href="#" data-section="fishermen" class="nav-link">
+                    <i class="fas fa-users"></i>Fishermen Management
+                </a></li>
+                <li><a href="#" data-section="vessels" class="nav-link">
+                    <i class="fas fa-ship"></i>Vessel Management
+                </a></li>
+                <li><a href="#" data-section="catches" class="nav-link">
+                    <i class="fas fa-fish"></i>Catch Tracking
+                </a></li>
+                <li><a href="#" data-section="analytics" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>Analytics
+                </a></li>
+                <li><a href="#" data-section="mapping" class="nav-link">
+                    <i class="fas fa-map-marked-alt"></i>Heat Map
+                </a></li>
+                <li><a href="#" data-section="reports" class="nav-link">
+                    <i class="fas fa-file-alt"></i>Reports
+                </a></li>
+                <li><a href="#" data-section="settings" class="nav-link">
+                    <i class="fas fa-cog"></i>Settings
+                </a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="content-section active">
+                <div class="section-header">
+                    <h2>Dashboard Overview</h2>
+                    <div class="header-actions">
+                        <select class="form-control" style="width: auto;">
+                            <option>Last 30 Days</option>
+                            <option>Last 7 Days</option>
+                            <option>Last 90 Days</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Key Metrics Cards -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>1,847</h3>
+                            <p>Active Fishermen</p>
+                            <span class="metric-trend positive">+12% from last month</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-ship"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>892</h3>
+                            <p>Registered Vessels</p>
+                            <span class="metric-trend positive">+5% from last month</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>2</h3>
+                            <p>Active SOS Alerts</p>
+                            <span class="metric-trend warning">Requires attention</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>3</h3>
+                            <p>Endangered Species Incidents</p>
+                            <span class="metric-trend neutral">This month</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>87.5%</h3>
+                            <p>Coast Guard Coverage</p>
+                            <span class="metric-trend positive">+3% from last month</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>45 min</h3>
+                            <p>Avg Response Time</p>
+                            <span class="metric-trend positive">-5 min improvement</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-row">
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <h3>Monthly Catch Trends</h3>
+                        <canvas id="catchTrendChart"></canvas>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <h3>Regional Productivity</h3>
+                        <canvas id="regionalChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Feed -->
+                <div class="activity-section">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-feed" id="activityFeed">
+                        <!-- Activity items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SOS Emergency Section -->
+            <section id="sosSection" class="content-section">
+                <div class="section-header">
+                    <h2>SOS Emergency Response</h2>
+                    <div class="header-actions">
+                        <button class="btn btn--primary" id="dispatchCoastGuard">
+                            <i class="fas fa-ship"></i>Dispatch Coast Guard
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Emergency Contacts -->
+                <div class="emergency-contacts">
+                    <div class="contact-card">
+                        <h4><i class="fas fa-phone"></i> Emergency Hotline</h4>
+                        <p class="contact-number">1554 (Coast Guard)</p>
+                    </div>
+                    <div class="contact-card">
+                        <h4><i class="fas fa-radio"></i> Maritime Rescue</h4>
+                        <p class="contact-number">+91-11-2338-9073</p>
+                    </div>
+                    <div class="contact-card">
+                        <h4><i class="fas fa-satellite"></i> Satellite Communication</h4>
+                        <p class="contact-number">+91-22-2431-6558</p>
+                    </div>
+                </div>
+
+                <!-- Active SOS Alerts -->
+                <div class="sos-alerts">
+                    <h3>Active Emergency Alerts</h3>
+                    <div id="sosAlertsList" class="alerts-list">
+                        <!-- SOS alerts will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conservation Section -->
+            <section id="conservationSection" class="content-section">
+                <div class="section-header">
+                    <h2>Endangered Species Monitoring</h2>
+                    <div class="header-actions">
+                        <button class="btn btn--primary" id="reportEndangeredBtn">
+                            <i class="fas fa-plus"></i>Report Incident
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Conservation Metrics -->
+                <div class="conservation-metrics">
+                    <div class="metric-card">
+                        <div class="metric-icon conservation">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>3</h3>
+                            <p>High Severity Incidents</p>
+                            <span class="metric-trend warning">This month</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon conservation">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>94.2%</h3>
+                            <p>Conservation Compliance</p>
+                            <span class="metric-trend positive">+1.5% improvement</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon conservation">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>100%</h3>
+                            <p>Release Success Rate</p>
+                            <span class="metric-trend positive">All reported catches released</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Endangered Species Incidents Table -->
+                <div class="table-container">
+                    <h3>Recent Endangered Species Catches</h3>
+                    <table class="data-table" id="endangeredTable">
+                        <thead>
+                            <tr>
+                                <th>Incident ID</th>
+                                <th>Species</th>
+                                <th>Fisherman</th>
+                                <th>Location</th>
+                                <th>Timestamp</th>
+                                <th>Action Taken</th>
+                                <th>Status</th>
+                                <th>Severity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="endangeredTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Fishermen Management Section -->
+            <section id="fishermenSection" class="content-section">
+                <div class="section-header">
+                    <h2>Fishermen Management</h2>
+                    <div class="header-actions">
+                        <button class="btn btn--primary" id="addFishermanBtn">
+                            <i class="fas fa-plus"></i>Add Fisherman
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filters-bar">
+                    <input type="text" placeholder="Search fishermen..." class="form-control" id="fishermenSearch">
+                    <select class="form-control" id="regionFilter">
+                        <option value="">All Regions</option>
+                        <option value="Northern Region">Northern Region</option>
+                        <option value="Southern Region">Southern Region</option>
+                        <option value="Eastern Region">Eastern Region</option>
+                        <option value="Western Region">Western Region</option>
+                    </select>
+                    <select class="form-control" id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="fishermenTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>License</th>
+                                <th>Region</th>
+                                <th>Phone</th>
+                                <th>Vessel</th>
+                                <th>Status</th>
+                                <th>License Expiry</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fishermenTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Vessels Management Section -->
+            <section id="vesselsSection" class="content-section">
+                <div class="section-header">
+                    <h2>Vessel Management</h2>
+                    <div class="header-actions">
+                        <button class="btn btn--primary" id="addVesselBtn">
+                            <i class="fas fa-plus"></i>Add Vessel
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="vesselsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Registration</th>
+                                <th>Type</th>
+                                <th>Capacity (kg)</th>
+                                <th>Length (m)</th>
+                                <th>Owner</th>
+                                <th>GPS Status</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vesselsTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Catch Tracking Section -->
+            <section id="catchesSection" class="content-section">
+                <div class="section-header">
+                    <h2>Catch Tracking</h2>
+                    <div class="header-actions">
+                        <button class="btn btn--primary" id="addCatchBtn">
+                            <i class="fas fa-plus"></i>Log New Catch
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filters-bar">
+                    <input type="date" class="form-control" id="dateFromFilter">
+                    <input type="date" class="form-control" id="dateToFilter">
+                    <select class="form-control" id="speciesFilter">
+                        <option value="">All Species</option>
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                    <select class="form-control" id="methodFilter">
+                        <option value="">All Methods</option>
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="catchesTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Fisherman</th>
+                                <th>Vessel</th>
+                                <th>Species</th>
+                                <th>Quantity (kg)</th>
+                                <th>Method</th>
+                                <th>Location</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="catchesTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analyticsSection" class="content-section">
+                <div class="section-header">
+                    <h2>Analytics & Insights</h2>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                        <h3>Species-wise Catch Distribution</h3>
+                        <canvas id="speciesChart"></canvas>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                        <h3>Fishing Method Effectiveness</h3>
+                        <canvas id="methodChart"></canvas>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                        <h3>Performance by Region</h3>
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                        <h3>Compliance Rates</h3>
+                        <canvas id="complianceChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Enhanced Mapping Section -->
+            <section id="mappingSection" class="content-section">
+                <div class="section-header">
+                    <h2>Maritime Heat Map & Tracking</h2>
+                    <div class="header-actions">
+                        <button class="btn btn--outline" id="toggleLegend">
+                            <i class="fas fa-list"></i>Toggle Legend
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mapping-layout">
+                    <div class="heat-map-container">
+                        <canvas id="heatMapCanvas" width="800" height="600"></canvas>
+                        <div class="map-controls">
+                            <button class="btn btn--sm" id="zoomIn"><i class="fas fa-plus"></i></button>
+                            <button class="btn btn--sm" id="zoomOut"><i class="fas fa-minus"></i></button>
+                            <button class="btn btn--sm" id="resetZoom"><i class="fas fa-home"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="map-legend-panel" id="mapLegend">
+                        <h4>Maritime Legend</h4>
+                        <div class="legend-sections">
+                            <div class="legend-section">
+                                <h5>Activity Levels</h5>
+                                <div class="legend-item">
+                                    <span class="legend-dot hotspot-high"></span>
+                                    <span>High Fishing Activity</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot hotspot-medium"></span>
+                                    <span>Medium Fishing Activity</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot hotspot-low"></span>
+                                    <span>Low Fishing Activity</span>
+                                </div>
+                            </div>
+                            
+                            <div class="legend-section">
+                                <h5>Vessels</h5>
+                                <div class="legend-item">
+                                    <span class="legend-dot vessel-online"></span>
+                                    <span>Vessels Online</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot vessel-offline"></span>
+                                    <span>Vessels Offline</span>
+                                </div>
+                            </div>
+                            
+                            <div class="legend-section">
+                                <h5>Coast Guard</h5>
+                                <div class="legend-item">
+                                    <span class="legend-dot coast-guard"></span>
+                                    <span>Coast Guard Patrol</span>
+                                </div>
+                            </div>
+                            
+                            <div class="legend-section">
+                                <h5>Restricted Areas</h5>
+                                <div class="legend-item">
+                                    <span class="legend-dot restricted-high"></span>
+                                    <span>High Restriction Zone</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot restricted-medium"></span>
+                                    <span>Medium Restriction Zone</span>
+                                </div>
+                            </div>
+                            
+                            <div class="legend-section">
+                                <h5>Alerts</h5>
+                                <div class="legend-item">
+                                    <span class="legend-dot sos-alert"></span>
+                                    <span>SOS Emergency</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot endangered-alert"></span>
+                                    <span>Endangered Species Zone</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vessel-tracking-panel">
+                    <h3>Real-time Vessel Tracking</h3>
+                    <div id="vesselTrackingList" class="vessel-tracking-list">
+                        <!-- Vessel tracking items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reportsSection" class="content-section">
+                <div class="section-header">
+                    <h2>Reports & Exports</h2>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h3>Catch Summary Report</h3>
+                        <p>Comprehensive catch data by region, species, and time period</p>
+                        <div class="report-options">
+                            <select class="form-control">
+                                <option>Last 30 Days</option>
+                                <option>Last 90 Days</option>
+                                <option>Custom Range</option>
+                            </select>
+                            <button class="btn btn--primary">Generate PDF</button>
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Emergency Response Report</h3>
+                        <p>SOS incidents, response times, and safety analytics</p>
+                        <div class="report-options">
+                            <select class="form-control">
+                                <option>This Month</option>
+                                <option>Last 3 Months</option>
+                                <option>This Year</option>
+                            </select>
+                            <button class="btn btn--primary">Export Excel</button>
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Conservation Report</h3>
+                        <p>Endangered species incidents and conservation compliance</p>
+                        <div class="report-options">
+                            <select class="form-control">
+                                <option>Monthly</option>
+                                <option>Quarterly</option>
+                                <option>Annual</option>
+                            </select>
+                            <button class="btn btn--primary">Generate PDF</button>
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Heat Map Analytics</h3>
+                        <p>Fishing pattern analysis and maritime coverage reports</p>
+                        <div class="report-options">
+                            <select class="form-control">
+                                <option>All Regions</option>
+                                <option>By Region</option>
+                                <option>By Activity Level</option>
+                            </select>
+                            <button class="btn btn--primary">Export CSV</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settingsSection" class="content-section">
+                <div class="section-header">
+                    <h2>Settings & Configuration</h2>
+                </div>
+
+                <div class="settings-content">
+                    <div class="settings-group">
+                        <h3>User Preferences</h3>
+                        <div class="form-group">
+                            <label class="form-label">Default Date Range</label>
+                            <select class="form-control">
+                                <option>Last 30 Days</option>
+                                <option>Last 7 Days</option>
+                                <option>Last 90 Days</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Notifications</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked> Email alerts for SOS emergencies</label>
+                                <label><input type="checkbox" checked> SMS alerts for endangered species</label>
+                                <label><input type="checkbox"> Daily heat map updates</label>
+                                <label><input type="checkbox" checked> Emergency response notifications</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <h3>System Configuration</h3>
+                        <div class="form-group">
+                            <label class="form-label">Heat Map Update Frequency</label>
+                            <select class="form-control">
+                                <option>Real-time</option>
+                                <option>Every 15 minutes</option>
+                                <option>Every 30 minutes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Emergency Response Threshold</label>
+                            <input type="number" class="form-control" value="45" placeholder="Minutes">
+                        </div>
+                        <button class="btn btn--primary">Save Settings</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for Add/Edit Forms -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Record</h2>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">
+        <div class="toast-content">
+            <i class="toast-icon"></i>
+            <span class="toast-message"></span>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
